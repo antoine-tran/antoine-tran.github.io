@@ -82,7 +82,7 @@
 
 
       <div class="page-header">
-        <h1>Copyright and Disclaimer</h1>
+        <h1>References</h1>
       </div>
       
       <p>Hedera uses the following library for working with Wikipedia:</p>
@@ -93,6 +93,10 @@
 <li><a href="https://github.com/ogrisel/pignlproc">PigNLPRoc</a>: PigNLPRoc is an execellent tool for working with Wikipedia article dumps in Pig. Hedera inherits the parsing code from PigNLPRoc and provides the same functionalities in Wikipedia revision dumps.</li>
 <li><a href="https://github.com/whym/wikihadoop">WikiHadoop</a>: WikiHadoop provides a fast and simple way to split XML files in Wikipedia revision history using SAX-like parsing manner. Unfortunately, it is poorly-documented, does not scale well with big compressed files, and does not provide fast and approximated reading. Hedera inherits the parssing idea of Wikihadoop in transformation phase (see <a href="architecture.html">architecture</a> and <a href="apidocs/index.html">API</a> for more details) in a fully map reduce fashion, thus guarantees the scalability of handling compressed big files.</li>
        </ul>
+
+      <div class="page-header">
+        <h1>Copyright and Disclaimer</h1>
+      </div>
 
       <p>
 The tool is currently pretty much in active development phase, meaning that it can
