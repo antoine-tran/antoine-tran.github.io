@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+
+    <title>Hedera: Architecture</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Home</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="about.html">About</a></li>
+            <li class="active"><a href="wikirevision.html">Wikipedia Revision</a></li>
+            <li><a href="https://github.com/antoine-tran/Hedera">Source code</a></li>
+            <li><a href="apidocs/index.html">API</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container theme-showcase" role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Hedera</h1>
+        <p>A Hadoop toolkit for processing large versioned document collections</p>
+      </div>
+
+      <div class="page-header">
+        <h1>Architecture</h1>
+      </div>
+      
+      <p>
+      <img src="img/hedera-arch-v0.0.1.png" class="img-rounded"/>
+      </p>
+
+      <ul>
+         <li>Hedera provides a set of custom <i>InputFormat</i>'s that can handle the versioned documents in different levels. InputFormat is the data structure in Hadoop that defines the data units that can be processed in parallel by different map reduce tasks. In Hedera, we put efforts to provide different ways of extracting structured information from the text and redirect respective data into nodes for concurrent processing tasks.</li>
+         <li>Hedera provides APIs to work in different programming languages (current versions - 0.1-SNAPSHOT - supports Java, Python, Pig)</li>
+         <li> (Ongoing) Hedera implements plugins to integrate into other indexing framework: Lucene, ElasticSearch, Solr, etc. </li>
+         <li> Hedera supports working directly and incrementally with compressed files of different formats: .bz2, gz, lzo, snappy</li>
+      </ul>
+
+    <div class="page-header">
+        <h1>Why Hedera ?</h1>
+    </div>
+
+    <p>
+    While there are several frameworks built to support
+processing big textual data (both in MapReduce and non-MapReduce
+fashion), little has been focused on efficient processing of versioned
+document collections such as Web archives, revisions of collaborated
+documents (news articles or encyclopedia pages such as Wikipedia). As
+compared to traditional corpora, versioned documents have some following
+special characteristics: 
+    </p>
+
+    <ul>
+       <li>
+ One documents have several snapshots, each typically associated with
+one specific timestamps indicating the publication time. Snapshots
+should not be considered independent documents, but rather siblings
+connected to one document identity.
+       </li>
+
+       <li>
+Document snapshots' contents are highly redundant. In practice, most
+  of consecutive snapshots are generated to fix meticulous
+  details, typos, etc. from the previous ones.
+       </li>
+
+       <li>
+Big changes in content of a document often come in narrow time
+  period (minutes or within a day) as a response to the addition of one truly new
+  information or the revising of important text snippets. This bursty
+  behaviour should be exploited for efficient processing of text
+       </li>
+
+       <li>
+In traditional text corpora, document distribution is skew, some
+  have big chunks of text while other can contain a few words. In
+  versioned documents, the degree of skewness goes even higher. For
+  example, in Wikipedia revisions, some snapshots of a page can amount
+  up to 10 GB of texts, and some (such as redirects) just have a few
+  Kilobytes. Any parallel framework must take this into account to
+  support better load balancing without sacrifying the
+  inter-dependences of snapshots within one document.
+       </li>
+    </ul>
+
+    <p>
+Hedera was built with those questions in mind. It uses Hadoop
+frameworks to support the scalable and parallel processing of data in
+high level programming languages. It optimizes
+the operations and APIs to address the above challenges, while still
+conforms to the MapReduce standards and support traditional
+workflows. Hedera aims to support rapid development of experimental
+models, and to this extent it tries to rely less on heavy
+general-purpose frameworks built for enterprise environments (such as
+ElasticSearch, etc.). The philosophy of Hedera is:
+    </p>
+
+      <div class="well">
+        <p>Get dirty things done, and get them done quick, bro !!</p>
+      </div>
+    
+    <div>
+    </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
