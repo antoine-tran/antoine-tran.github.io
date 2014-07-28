@@ -67,18 +67,7 @@
       
       <p>
       <img src="img/hedera-arch-v0.0.1.png" class="img-rounded"/>
-      </p>
-
-      <ul>
-         <li>Hedera provides a set of custom <i>InputFormat</i>'s that can handle the versioned documents in different levels. InputFormat is the data structure in Hadoop that defines the data units that can be processed in parallel by different map reduce tasks. In Hedera, we put efforts to provide different ways of extracting structured information from the text and redirect respective data into nodes for concurrent processing tasks.</li>
-         <li>Hedera provides APIs to work in different programming languages (current versions - 0.1-SNAPSHOT - supports Java, Python, Pig)</li>
-         <li> (Ongoing) Hedera implements plugins to integrate into other indexing framework: Lucene, ElasticSearch, Solr, etc. </li>
-         <li> Hedera supports working directly and incrementally with compressed files of different formats: .bz2, gz, lzo, snappy</li>
-      </ul>
-
-    <div class="page-header">
-        <h1>Why Hedera ?</h1>
-    </div>
+      </p>  
 
     <p>
     While there are several frameworks built to support
@@ -90,57 +79,6 @@ compared to traditional corpora, versioned documents have some following
 special characteristics: 
     </p>
 
-    <ul>
-       <li>
- One documents have several snapshots, each typically associated with
-one specific timestamps indicating the publication time. Snapshots
-should not be considered independent documents, but rather siblings
-connected to one document identity.
-       </li>
-
-       <li>
-Document snapshots' contents are highly redundant. In practice, most
-  of consecutive snapshots are generated to fix meticulous
-  details, typos, etc. from the previous ones.
-       </li>
-
-       <li>
-Big changes in content of a document often come in narrow time
-  period (minutes or within a day) as a response to the addition of one truly new
-  information or the revising of important text snippets. This bursty
-  behaviour should be exploited for efficient processing of text
-       </li>
-
-       <li>
-In traditional text corpora, document distribution is skew, some
-  have big chunks of text while other can contain a few words. In
-  versioned documents, the degree of skewness goes even higher. For
-  example, in Wikipedia revisions, some snapshots of a page can amount
-  up to 10 GB of texts, and some (such as redirects) just have a few
-  Kilobytes. Any parallel framework must take this into account to
-  support better load balancing without sacrifying the
-  inter-dependences of snapshots within one document.
-       </li>
-    </ul>
-
-    <p>
-Hedera was built with those questions in mind. It uses Hadoop
-frameworks to support the scalable and parallel processing of data in
-high level programming languages. It optimizes
-the operations and APIs to address the above challenges, while still
-conforms to the MapReduce standards and support traditional
-workflows. Hedera aims to support rapid development of experimental
-models, and to this extent it tries to rely less on heavy
-general-purpose frameworks built for enterprise environments (such as
-ElasticSearch, etc.). The philosophy of Hedera is:
-    </p>
-
-      <div class="well">
-        <p>Get dirty things done, and get them done quick, bro !!</p>
-      </div>
-    
-    <div>
-    </div>
 
     </div> <!-- /container -->
 
