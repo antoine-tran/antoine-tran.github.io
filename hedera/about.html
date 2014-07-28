@@ -66,8 +66,15 @@
       </div>
       
       <p>
-      Hedera is a software toolkit based on <a href="http://hadoop.apache.org/">Hadoop framework</a> that supports users in processing, indexing and mining text from very large versioned document collections. Hedera is designed to target rapid development and experimentation on scenarios, where it is required to deliver the (often preliminary) results as soon as possible, before going for a full-fledged solution. Hedera aims to support processing popular big datasets in public, such as <a href="http://en.wikipedia.org/wiki/Wikipedia:Database_download">Wikipedia revision history</a>, <a href="https://archive.org/index.php">Internet archive</a>, etc.
+      Hedera is a software toolkit based on <a href="http://hadoop.apache.org/">Hadoop framework</a> that supports users in processing, indexing and mining text from very large versioned document collections. Hedera is designed to target rapid development and experimentation on scenarios, where it is required to deliver the (often preliminary) results as soon as possible, before going for a full-fledged solution. Hedera aims to support processing popular big datasets in public, such as <a href="http://en.wikipedia.org/wiki/Wikipedia:Database_download">Wikipedia revision history</a>, <a href="https://archive.org/index.php">Internet archive</a>, etc. Hedera offers a few features such as:
       </p>
+
+      <ul>
+         <li>Hedera provides a set of custom <i>InputFormat</i>'s that can handle the versioned documents in different levels. InputFormat is the data structure in Hadoop that defines the data units that can be processed in parallel by different map reduce tasks. In Hedera, we put efforts to provide different ways of extracting structured information from the text and redirect respective data into nodes for concurrent processing tasks.</li>
+         <li>Hedera provides APIs to work in different programming languages (current versions - 0.1-SNAPSHOT - supports Java, Python, Pig)</li>
+         <li> (Ongoing) Hedera implements plugins to integrate into other indexing framework: Lucene, ElasticSearch, Solr, etc. </li>
+         <li> Hedera supports working directly and incrementally with compressed files of different formats: .bz2, gz, lzo, snappy</li>
+      </ul>
 
     </div> <!-- /container -->
 
