@@ -100,11 +100,12 @@ Next, obtain the source code from the <a href="https://github.com/antoine-tran/H
 <pre>
 <code>
 git clone https://github.com/antoine-tran/Hedera
-hadoop jar hedera-0.X-SNAPSHOT.jar [CLASS_NAME] -begin [TIME1] -end [TIME2]
+cd Hedera
+mvn install -DskipTests
 </code>
 </pre>
 
-
+<p>this will create a Jar file <code>hedera-*.jar</code> </p>
 
 <code>
 jobConfigurationObject.setBoolean(WikiRevisionInputFormat.SKIP_NON_ARTICLES, true);
