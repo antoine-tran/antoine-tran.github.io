@@ -68,7 +68,9 @@
       </div>
       
     <p>
-Wikipedia is perhaps one of the most popular datasets among the research community of text mining. Wikipedia has several unique features distinguishing it from other dataset: It contains rich information compiled by human, it covers a wide range of topics, from scientific knowledge to celebrity's bibliography and so on, and it is free. While there are several tools supporting processing Wikipedia text dumps, both in centralized and distributed settings (for example, <a href="http://lintool.github.io/Cloud9/docs/content/wikipedia.html">Cloud<sup>9</sup></a> is an excellent tool that is based on Hadoop framework), the access to the Wikipedia revision history is still prohibited because of their enormous volumes (tens of Terabytes of text). Wikipedia revision history datasets are formatted in a different way from Wikipedia text, and it contains several compressed files, which makes tools such as Cloud<sup>9</sup> difficult to re-use.
+Wikipedia is perhaps one of the most popular datasets among the research community of text mining. Wikipedia has several unique features distinguishing it from other dataset: It contains rich information compiled by human, it covers a wide range of topics, from scientific knowledge to celebrity's bibliography and so on, and it is free. Compared to Wikiepdia text, Wikipedia revision history includes a much broader spectrum of data: Articles, talks, discussions, etc. It also contains a complete set of snapshots for each Wikipedia pages, making it aa gold mine for many studies that are concerned with the dynamics of Wikipedia contents over time.
+</p>
+<p>Unfortunately, while there are several tools supporting processing Wikipedia text dumps in centralized and distributed settings (for example, <a href="http://lintool.github.io/Cloud9/docs/content/wikipedia.html">Cloud<sup>9</sup></a> is an excellent tool that is based on Hadoop framework), the access to the Wikipedia revision history is still prohibited because of their enormous volumes (tens of Terabytes of text). Wikipedia revision history datasets are formatted in a different way from Wikipedia text, and it contains several compressed files, which makes tools such as Cloud<sup>9</sup> difficult to re-use.
 </p>
 <p>
 Some other software tools such as <a href="https://code.google.com/p/jwpl">JWPL Revision machine</a> makes a considerable effort to repack the Wikipedia revision history dataset by storing only differences between consecutive revisions, which saves a lot of hard disk capacity (for instance, the dump versioned on 2014 May 02 amounts only 380 GBytes of hard disk). While in many cases this is sufficient to get basic structures from the dataset, such as linking network, it is unable to make text-intensive queries (for instance, full-text over a sequence of revisions of different articles) without re-constructing the text from the beginning revisions and thus result in a huge bottleneck, if not killing the database server. What is more, JWPL lacks the flexibility support to extend its functionalities, even though the authors make quite an effort to provide as rich family of APIs as possible. It is thus impossible to extract ad-hoc information from Wikipedia revision (for example, extracting all anchor texts of all revisions belonging to a certain categories). Finally, JWPL is a centralized setting, it takes very long time to preprocess (one month to index the dataset) before the first experiment / testing code can be called. In several research scenarios, this is unacceptable.
@@ -78,6 +80,9 @@ Some other software tools such as <a href="https://code.google.com/p/jwpl">JWPL 
 And that is where Hedera comes in.
 </p>
 
+<p>
+With Hedera, we try to make Wikipedia revision history dataset accessible to users of different domains and demands. Instead of providing a full-fledged (and thus cumbersome, difficult to extend) indexing and storing architecture, we built Hedera as an incremental processing tool for Wikipedia revisions. Users can quickly process on subset of Wikipedia revisions (for example, a few dump files instead of all, or just work with articles)
+</p>
 
 
 <code>
