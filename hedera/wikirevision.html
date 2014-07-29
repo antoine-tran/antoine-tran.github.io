@@ -64,10 +64,10 @@
       </header>
 
       <div class="page-header">
-        <h1>Getting started with Wikipedia Revision</h1>
+        <h1>Hedera and Wikipedia Revision</h1>
       </div>
       
-    <p>
+<p>
 Wikipedia is perhaps one of the most popular datasets among the research community of text mining. Wikipedia has several unique features distinguishing it from other dataset: It contains rich information compiled by human, it covers a wide range of topics, from scientific knowledge to celebrity's bibliography and so on, and it is free. Compared to Wikiepdia text, Wikipedia revision history includes a much broader spectrum of data: Articles, talks, discussions, etc. It also contains a complete set of snapshots for each Wikipedia pages, making it aa gold mine for many studies that are concerned with the dynamics of Wikipedia contents over time.
 </p>
 <p>Unfortunately, while there are several tools supporting processing Wikipedia text dumps in centralized and distributed settings (for example, <a href="http://lintool.github.io/Cloud9/docs/content/wikipedia.html">Cloud<sup>9</sup></a> is an excellent tool that is based on Hadoop framework), the access to the Wikipedia revision history is still prohibited because of their enormous volumes (tens of Terabytes of text). Wikipedia revision history datasets are formatted in a different way from Wikipedia text, and it contains several compressed files, which makes tools such as Cloud<sup>9</sup> difficult to re-use.
@@ -81,7 +81,15 @@ And that is where Hedera comes in.
 </p>
 
 <p>
-With Hedera, we try to make Wikipedia revision history dataset accessible to users of different domains and demands. Instead of providing a full-fledged (and thus cumbersome, difficult to extend) indexing and storing architecture, we built Hedera as an incremental processing tool for Wikipedia revisions. Users can quickly process on subset of Wikipedia revisions (for example, a few dump files instead of all, or just work with articles)
+With Hedera, we try to make Wikipedia revision history dataset accessible to users of different domains and demands. Instead of providing a full-fledged (and thus cumbersome, difficult to extend) indexing and storing architecture, we built Hedera as an incremental processing tool for Wikipedia revisions. Users can quickly process on subset of Wikipedia revisions (for example, a few dump files instead of all, or just work with articles), and get the first results before waiting too long. They can also extend the system using their programming languages of choice (at the moment, Hedera supports Java, Pig Latin and Python) to extract custom data without too much effort. This pages provide a brief guidance to use Hedera for handling Wikipedia revision history dataset, from the raw files.
+</p>
+
+<div class="page-header">
+  <h1>Getting started</h1>
+</div>
+
+<p>
+<emp>Download Dataset:</emp>To get started, download the dumps from Wikipedia <a href="http://dumps.wikimedia.org/enwiki">here</a>. The matching files of revision history are named <code>enwiki-[DATE]-pages-meta-history[NO].xml-p*.*</code>, where DATE and NO is the version of the dumps as delivered at different time, and No is the index of the files. You can work with one or several, or all the files, even from different dates (if that makes sense to you).
 </p>
 
 
