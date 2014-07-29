@@ -131,17 +131,33 @@ mvn install -DskipTests
         <tr>
           <td><code>WikiRevisionPageInputFormat</code></td>
           <td>(LongWritable, Revision)</td>
-          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content in Java object <code>Revision</code> as value</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content in Java object <code>Revision</code> as value (see Javadoc API)</td>
         </tr>
         <tr>
           <td><code>WikiRevisionPairInputFormat</code></td>
           <td>(LongWritable, Text)</td>
           <td>Transform each two consecutive revisions of a Wikipedia page into a pair with page Id as key, and textual content of the revisions as value (see <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/input/WikiRevisionPairInputFormat.RevisionReader.html">API</a> for the XML format) </td>
         </tr>
+        <tr>
+          <td><code>WikiRevisionDiffnputFormat</code></td>
+          <td>(LongWritable, RevisionDiff)</td>
+          <td>Transform each two consecutive revisions of a Wikipedia page into a pair with page Id as key, and the differences between the textual contents of the revisions as value. The differences are computed by <a href="http://en.wikipedia.org/wiki/Diff">Myer's algorithm</a>, the results are output as Java <code>RevisionDiff</code> object (see Javadoc API)</td>
+        </tr>
+        <tr>
+          <td><code>RevisionLinkInputFormat</code></td>
+          <td>(LongWritable, LinkProfile)</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and the list of outgoing links to other Wikipedia pages as appeared in the revision text as value. The results are output as Java <code>LinkProfile</code> object (see Javadoc API)</td>
+        </tr>
       </tbody>
     </table>
   <!-- </div> -->
 </div>
+
+<h4>Extension</h4>
+<p>
+(<i>Note: Documentation in progress</i>)
+It is possible to define your own custom input formats. All above input formats follow the similar data structures and work flow, implemented in <code>WikiRevisionInputFormat</code>. The core building block of this abstract input format is <code>WikiRevisionReader</code>, which defines two functions: <code>doWhenMatch()</code> and <code>readUntilMatch()</code>. These functions handle the logic when the parser reaches the content in between the revisions or pages. More details come soon..
+</p>
 
 <h3>Filtering</h3>
 <p>In many cases, you do not want to process every Wikipedia pages, and prefer a quick filtering on the raw files before sending the data into map reduce. Hedera supports a number of filtering options to do so: </p>
