@@ -88,13 +88,13 @@ With Hedera, we try to make Wikipedia revision history dataset accessible to use
   <h1>Getting started</h1>
 </div>
 
-<h3>Download Dataset</h3>
+<h3>1. Download Dataset</h3>
 <p>
 To get started, download the XML dumps from Wikipedia <a href="http://dumps.wikimedia.org/enwiki">here</a>. The matching files of revision history are named <code>enwiki-[DATE]-pages-meta-history[NO].xml-pXXXXX.*</code>, where DATE and NO is the version of the dumps as delivered at different time, and No is the index of the files. You can work with one or several, or all the files, even from different dates (if that makes sense to you). Put them in the same HDFS directory.
 </p>
-<p>He</p>
 
-<h3>Build the Project</h3>
+
+<h3>2. Build the Project</h3>
 <p>
 Next, obtain the source code from the <a href="https://github.com/antoine-tran/Hedera">Github</a> and compile it:
 </p>
@@ -109,7 +109,7 @@ mvn install -DskipTests
 <p>this will create a Jar file <code>hedera-XXX.jar</code>, and copy all of its third parties to the directory named "libhedera" in the root directory of the project. If your cluster works on a different version of Hadoop or Pig, replace those in this directory (or change the version accordingly in the POM file). Alternatively, you can also package all libraries and the compiled code into one big jar with <code>shade:shade</code> plugin (<a href="http://maven.apache.org/plugins/maven-shade-plugin/">details here</a>).
 </p>
 
-<h3>Input Format</h3>
+<h3>3. Input Format</h3>
 <p>Before moving the next steps, you should get yourself familiar with Hedera <i>InputFormat</i>. If you do not work much with Hadoop input format, you can read <a href="https://developer.yahoo.com/hadoop/tutorial/module5.html">here</a> for more conceptual explanations. Hedera currently supports the following Input Format:</p>
 
 <div class="row">
@@ -199,9 +199,42 @@ SET 'org.hedera.input.endtime' TIME2
 
 where TIME1 and TIME2's are strings in ISOTime format.
 
-      <div class="page-header">
-         <h1>Building Dictionary, Vectorization</h1>
-      </div>
+
+
+<h3>4. Information Extraction</h3>
+<p>(<i>Documentation in progress</i>)</p>
+
+<h4>Java:</h4>
+<p>
+In Java: If you work in Java, using or writing an information extraction program is fairly easy. Depending on your need, you can choose the appropriate Input format mentioned above, and define the mapper and reducer functions according to the (key,value) pairs output by the input format. For example, if you want to work with differences between two consecutive revisions of the same Wikipedia page, then your Mapper will look like:
+</p>
+
+<pre>
+<code>
+class MyMapper extends Mapper<LongWritable, RevisionDiff, <YOUR KEY TYPE>, <YOUR VALUE TYPE>> {
+
+...
+
+}
+</code>
+</pre>
+
+<p>We have provided a few example extraction program as map reduce job in the package <code>org.hedera.mapreduce</code> (see API))</p>
+
+<h4>Pig Latin:</h4>
+<p>To extract information from XML dumps via Pig Latin, you need to register Hedera in your Pig script:</p>
+<pre>
+<code>
+REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
+</code>
+</pre>
+
+<p>In order to use different input formats, you need to declare the UDF pig loader to transform the data output into Pig-compatible tuples. If you did not work with Pig UDF loader before, please refer to the documentation <a href="http://pig.apache.org/docs/r0.9.1/udf.html"></a></p>
+
+
+<div class="page-header">
+ <h1>Building Dictionary, Vectorization</h1>
+</div>
 
 <p><i>(this is still tentative. To be updated soon)</i></p>
 
@@ -229,6 +262,9 @@ One of the favourite format for handling text in different programming languages
 }
 </code>
 </pre>
+
+<p>In Java, Hedera can then pipeline these new formatted files via the input format <code>WikiFullRevisionJsonInputFormat</code>, which transforms each line into a pair of (<code>LongWritable</code> , <code>FullRevision</code>), with FullRevision is the extended data structure of <code>Revision</code> with additional data on user and disccussing comments on the revision (see API <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/FullRevision.html">here</a>).
+</p>
 
     </div> <!-- /container -->
 
