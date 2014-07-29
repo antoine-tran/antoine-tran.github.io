@@ -153,12 +153,13 @@ mvn install -DskipTests
   <!-- </div> -->
 </div>
 
-<h4>Extension</h4>
+<h3>Extension</h3>
 <p>
 (<i>Note: Documentation in progress</i>)
 It is possible to define your own custom input formats. All above input formats follow the similar data structures and work flow, implemented in <code>WikiRevisionInputFormat</code>. The core building block of this abstract input format is <code>WikiRevisionReader</code>, which defines two functions: <code>doWhenMatch()</code> and <code>readUntilMatch()</code>. These functions handle the logic when the parser reaches the content in between the revisions or pages. More details come soon..
 </p>
 
+<br>
 <h3>Filtering</h3>
 <p>In many cases, you do not want to process every Wikipedia pages, and prefer a quick filtering on the raw files before sending the data into map reduce. Hedera supports a number of filtering options to do so: </p>
 
@@ -199,8 +200,8 @@ SET 'org.hedera.input.endtime' TIME2
 
 where TIME1 and TIME2's are strings in ISOTime format.
 
-
-
+<br>
+<br>
 <h3>4. Information Extraction</h3>
 <p>(<i>Documentation in progress</i>)</p>
 
@@ -221,6 +222,7 @@ class MyMapper extends Mapper&#60;LongWritable, RevisionDiff, &#60;YOUR KEY TYPE
 
 <p>We have provided a few example extraction program as map reduce job in the package <code>org.hedera.mapreduce</code> (see API))</p>
 
+<br>
 <h4>Pig Latin:</h4>
 <p>To extract information from XML dumps via Pig Latin, you need to register Hedera in your Pig script:</p>
 <pre>
@@ -229,9 +231,38 @@ REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
 </code>
 </pre>
 
-<p>In order to use different input formats, you need to declare the UDF pig loader to transform the data output into Pig-compatible tuples. If you did not work with Pig UDF loader before, please refer to the documentation <a href="http://pig.apache.org/docs/r0.9.1/udf.html"></a></p>
+<br>
+<h4>Python:</h4>
+<p>If you want to write your map-reduce job in Python, for example via Hadoop streaming, you need to transform the data into string-like format, for example, in JSON. The following code assumes that you have transform each revision in into a JSON object using our built-in flatten script (see <a href="#flatten">Data flattening</a> section below), and serialize it as one line in a text file. Then you can write your mapper as follows:
+</p>
+<pre>
+<code>
+#!/usr/bin/env python
+
+from mrjob.job import MRJob
+from mrjob.protocol import RawValueProtocol
+
+import json
+
+class YourMRJob(MRJob):
+    
+    def mapper(self,key,line):
+        obj = json.loads(line)
+        title = obj['page_title']
+        # extract other information
+        yield __your_key__, __your_output_value__
+
+if __name__ == "__main__":
+    YourMRJob.run()
+</code>
+</pre>
+
+<p>(Just in case you might wonder, the above code snippet uses <a href="https://pythonhosted.org/mrjob/">mrjob</a> framework. This is only for illustration, you can write any Python code the way you want)</p>
 
 
+<br>
+<br>
+<br>
 <div class="page-header">
  <h1>Building Dictionary, Vectorization</h1>
 </div>
@@ -240,8 +271,9 @@ REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
 
 <p>In Hedera, you can also build basic data structures for Information Retrieval / matrix-like computation, such as mappings of entity / revision / texts into continous ID arrays. </p>
 
-
-<h3> Flattening dumps to CSV files </h3>
+<br><br><br>
+<hr/>
+<h3><a name="flatten"> Flattening dumps to CSV files </a></h3>
 
 One of the favourite format for handling text in different programming languages (e.g. Python) is plain-text CSV files. In Hedera you can flatten the XML dumps into CSV files simply by calling the Pig script XML2JSON.pig in source directory <code>pig/utils</code>. The output is the set of .csv files, each containing one revision per line in JSON format with the following schema:
 
