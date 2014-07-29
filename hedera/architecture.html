@@ -81,6 +81,95 @@ compared to traditional corpora, versioned documents have some following
 special characteristics: 
     </p>
 
+<ul>
+ <li>Two-level Load Balancing*: As a typical Hadoop setting, Hedera
+  feeds the Mapper with InputSplits. Each InputSplit object contain a
+  self-described piece of text and will be processed in
+  parallel. The sizes of the InputSplit is calculated based on the
+  size of the documents, snapshots and system-defined max split size. Hedera splits versioned documents via two levels:
+   <ul>
+      <li>
+	Level 1: Each InputSplit contains a set of full snapshots of
+      documents.
+      </li>
+      <li>
+        Level 2: Each InputSplit is read using an ETLReader
+      implementation to output several Mapper input. Each Mapper input
+      contains document header, a set of related snapshots or their
+      differentials, depending on one particular job. Here the
+      "relatedness'' is defined using a factory of Hedera methods, and
+      is extensible to faciliate new processing requirements.
+      </li>
+   </ul>
+ </li>
+	  
+ <li>Incremental Processing*: When used for indexing or information
+   extraction jobs, Hedera provides the option to work with 
+   differentials instead of many duplicated texts. A Hedera reader
+   checks for two snapshots and outputs only their changes to the next
+   step of the workflow. This helps reducing a huge amount of text
+   sent around the network, and in many cases it is sufficient to
+   look only the changes in the job. When original text is needed, a
+   Reconstructor can be called to communicate with related objects
+   (via the ids stored in the header of the messages), and it 
+   re-builds the content in reducer phase at will.</li>
+
+ <li>Fast Approximated Reader and Extractor on the go*: In many cases,
+   versions of one documents can differ
+   by only a few minor tokens, and those differences are irrelevant
+   for many information extraction jobs. Hedera provides a fast way to
+   skip redundant snapshots and only triggers the extraction when
+   detecting the big changes in semantics of the documents. A typical
+   workflow for a fast reading and extraction is as follows:
+   <ul>
+    <li>
+   An ETLReader object is implemented and instantiated. The reader
+     is pushed down to the very first phase of the inputting cycle in
+     Hadoop, thereby to avoid passing irrelevant text to the next
+     layer.
+    </li>
+    <li>
+     It extracts lightweight meta-data for each snapshots it reads
+     (e.g. snapshot length, the length of title, timestamps,...). This
+     is done by overwritting the method <code>extractMetadata()</code>
+     in ETLReader.
+    </li>
+    <li>
+     For each new snapshot obtained, the reader examines its meta-data
+     with ones from previous snapshots.
+    </li>
+    <li>
+     If a substantial change is detected, the previous snapshot is
+     thrown away and replaced by the new one.
+    </li>
+    <li>
+     If there are no big changes in the content, the reader then
+     invokes the method <code>inspectEdits()</code> to see whether the
+     currently visited snapshots is  the improvement of syntax,
+     typos, etc. of the previous one and can replace it. Note that both methods
+     <code>extractMetadata()</code>
+	  and <code>inspectEdits()</code> work only on the meta-data of
+     the snapshots and not the actual contents. They are based on
+     heuristics to enable fast checking.
+    </li>
+    <li>
+     After these two fast checking, the actual (and often expensive)
+     information extraction operation is called. After that, all
+     previous snapshots are thrown away.
+    </li>
+   </ul>
+ </li>
+
+
+ <li>Compressed file handling*: Many big corpora bundles the documents
+   in one or several compressed file chunks. Hedera supports the
+   ability to detect snapshots and splits virtually the document
+   snapshots inside each chunk, without performing physical
+   decompression on the files. The decompressing and reading is
+   deferred till the last phase of the information extraction.
+ </li>
+</ul>
+
 
     </div> <!-- /container -->
 
