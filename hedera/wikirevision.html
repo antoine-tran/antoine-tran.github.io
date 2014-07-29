@@ -68,7 +68,9 @@
       </div>
       
     <p>
-Wikipedia revision history dumps includes pages of all types (articles, talks, User pages, discussions, etc. Full list [here](http://en.wikipedia.org/wiki/Wikipedia:Namespace)). In Hedera, you can choose to extract information from article pages only by specifying the configuration variable "org.hedera.input.onlyarticle". In Java you can do it by:
+Wikipedia is perhaps one of the most popular datasets among the research community of text mining. Wikipedia has several unique features distinguishing it from other dataset: It contains rich information compiled by human, it covers a wide range of topics, from scientific knowledge to celebrity's bibliography and so on, and it is free. While there are several tools supporting processing Wikipedia text dumps, both in centralized and distributed settings (for example, <a href="http://lintool.github.io/Cloud9/docs/content/wikipedia.html">Cloud<sup>9</sup></a> is an excellent tool that is based on Hadoop framework), the access to the Wikipedia revision history is still prohibited because of their enormous volumes (tens of Terabytes of text). Wikipedia revision history datasets are formatted in a different way from Wikipedia text, and it contains several compressed files, which makes tools such as Cloud<sup>9</sup> difficult to re-use.
+
+Some other software tools such as <a href="https://code.google.com/p/jwpl/">JWPL Revision machine</a> makes a considerable effort to repack the Wikipedia revision history dataset by storing only differences between consecutive revisions, which saves a lot of hard disk capacity (for instance, the dump versioned on 2014 May 02 amounts only 380 GBytes of hard disk). However, JWPL   includes pages of all types (articles, talks, User pages, discussions, etc. Full list [here](http://en.wikipedia.org/wiki/Wikipedia:Namespace)). In Hedera, you can choose to extract information from article pages only by specifying the configuration variable "org.hedera.input.onlyarticle". In Java you can do it by:
 </p>
 
 <code>
