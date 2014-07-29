@@ -233,8 +233,6 @@ REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
 
 <p>In order to work with different input formats, you need to use the corresponding UDF Pig Loader (Read <a href="http://wiki.apache.org/pig/UDFManual">here</a> if you have not worked with loaders before). The loaders can be found in the package <code>org.hedera.pig.load</code>. Each loader relies on one type of input format, and it performs the transformation of data structure from java into a tuple of <code>org.apache.pig.data.Tuple</code> type. You can find more examples on how to use Pig scripts to extract various information in the directory "pig" under the root directory.</p>
 
-<p>Also, if you want to write your own loader, you can simply inherit </p>
-
 <br>
 <h4>Python:</h4>
 <p>If you want to write your map-reduce job in Python, for example via Hadoop streaming, you need to transform the data into string-like format, for example, in JSON. The following code assumes that you have transform each revision in into a JSON object using our built-in flatten script (see <a href="#flatten">Data flattening</a> section below), and serialize it as one line in a text file. Then you can write your mapper as follows:
