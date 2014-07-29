@@ -105,7 +105,16 @@ mvn install -DskipTests
 </code>
 </pre>
 
-<p>this will create a Jar file <code>hedera-*.jar</code> </p>
+<p>this will create a Jar file <code>hedera-*.jar</code> </p>, and copy all of its third parties to the directory named "libhedera" in the root directory of the project. If your cluster works on a different version of Hadoop or Pig, replace those in this directory (or change the version accordingly in the POM file). Alternatively, you can also package all libraries and the compiled code into one big jar with <code>shade:shade</code> plugin (<a href="http://maven.apache.org/plugins/maven-shade-plugin/">details here</a>).
+
+
+<p>What you will do next really depends on which programming languages you would like to use:</p>
+
+
+<h3>Filtering</h3>
+<p>In many cases, you do not want to process every Wikipedia pages, and prefer a quick filtering on the raw files before sending the data into map reduce. Hedera supports a number of filtering options to do so: </p>
+
+<h4>dsds</h4>
 
 <code>
 jobConfigurationObject.setBoolean(WikiRevisionInputFormat.SKIP_NON_ARTICLES, true);
@@ -170,14 +179,7 @@ One of the favourite format for handling text in different programming languages
 </code>
 </pre>
 
-
-<<<<<<< HEAD
-
     </div> <!-- /container -->
-=======
-    </div>
->>>>>>> 2621939f8f124969ebaaf8c9c8269d580a3c4c83
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
