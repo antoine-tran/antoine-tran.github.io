@@ -126,18 +126,17 @@ mvn install -DskipTests
         <tr>
           <td><code>WikiRevisionTextInputFormat</code></td>
           <td>(LongWritable, Text)</td>
-          <td>@mdo</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content as value</td>
         </tr>
         <tr>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+          <td><code>WikiRevisionPageInputFormat</code></td>
+          <td>(LongWritable, Revision)</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content in Java object <code>Revision</code> as value</td>
         </tr>
         <tr>
-          <td>3</td>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
+          <td><code>WikiRevisionPairInputFormat</code></td>
+          <td>(LongWritable, Text)</td>
+          <td>Transform each two consecutive revisions of a Wikipedia page into a pair with page Id as key, and textual content of the revisions as value (see <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/input/WikiRevisionPairInputFormat.RevisionReader.html">API</a> for the XML format) </td>
         </tr>
       </tbody>
     </table>
