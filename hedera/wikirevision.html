@@ -211,7 +211,6 @@ where TIME1 and TIME2's are strings in ISOTime format.
 <p>To take full advantages of Hedera's functionalities, the best way is to look at example testing codes provided in the project's source code, as well as via API (Hedera is currently growing very fast, but we try to keep the documentation up-to-dated with significant milestones we go along). Below we provide a brief guidelines to work with Hedera in Java, Pig and Python, the three programming languages currently supported in Hedera.</p>
 
 <br>
-<br>
 <h4>Java:</h4>
 <p>
 In Java: If you work in Java, using or writing an information extraction program is fairly easy. Depending on your need, you can choose the appropriate Input format mentioned above, and define the mapper and reducer functions according to the (key,value) pairs output by the input format. For example, if you want to work with differences between two consecutive revisions of the same Wikipedia page, then your Mapper will look like:
@@ -247,7 +246,7 @@ REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
 </code>
 </pre>
 
-<p>In order to work with different input formats, you need to use the corresponding UDF Pig Loader (Read <a href="http://wiki.apache.org/pig/UDFManual">here</a> if you have not worked with loaders before). The loaders can be found in the package <code>org.hedera.pig.load</code>. Each loader relies on one type of input format, and it performs the transformation of data structure from java into a tuple of <code>org.apache.pig.data.Tuple</code> type. You can find more examples on how to use Pig scripts to extract various information in the directory "pig" under the root directory.</p>
+<p>In order to work with different input formats, you need to use the corresponding UDF Pig Loader (Read <a href="http://wiki.apache.org/pig/UDFManual">here</a> if you have not worked with loaders before). The loaders can be found in the package <code>org.hedera.pig.load</code>. Each loader relies on one type of input format, and it performs the transformation of data structure from java into a tuple of <code>org.apache.pig.data.Tuple</code> type. You can find more examples on how to use Pig scripts to extract various information in the directory "pig" under the root directory. For your first appetite in playing with Hedera and Pig, please check the example <a href=""></a></p>
 
 <br>
 <h4>Python:</h4>
@@ -311,8 +310,17 @@ One of the favourite format for handling text in different programming languages
 </code>
 </pre>
 
-<p>In Java, Hedera can then pipeline these new formatted files via the input format <code>WikiFullRevisionJsonInputFormat</code>, which transforms each line into a pair of (<code>LongWritable</code> , <code>FullRevision</code>), with FullRevision is the extended data structure of <code>Revision</code> with additional data on user and disccussing comments on the revision (see API <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/FullRevision.html">here</a>).
+<p>You can try to see how this works by calling:</p>
+<pre>
+<code>
+pig -p BASEDIR="/directory/path/to/your/input-xml-dumps" -p OUTPUT="/path/to/output/results" XML2JSON.pig
+</code>
+</pre>
+
+<p>Now, if you continue to work with Java, Hedera can then pipeline these new formatted files via the input format <code>WikiFullRevisionJsonInputFormat</code>, which transforms each line into a pair of (<code>LongWritable</code> , <code>FullRevision</code>), with FullRevision is the extended data structure of <code>Revision</code> with additional data on user and disccussing comments on the revision (see API <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/FullRevision.html">here</a>).
 </p>
+
+<p>If you continue to work with Python, read these files line by line and parse the information using a JSON parser library (see example for Python above). It is as simple as that !!</p>
 
     </div> <!-- /container -->
 
