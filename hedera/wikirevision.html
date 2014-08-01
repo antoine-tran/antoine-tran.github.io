@@ -208,9 +208,10 @@ where TIME1 and TIME2's are strings in ISOTime format.
 <h3>4. Information Extraction</h3>
 <p>(<i>Documentation in progress</i>)</p>
 
-<p>To take full advantages of Hedera's functionalities, the best way is to look at example testing codes provided in the project's source code, as well as via API (Hedera is currently growing very fast, but we try to keep the documentation up-to-dated with significant milestones we go along). </p>
+<p>To take full advantages of Hedera's functionalities, the best way is to look at example testing codes provided in the project's source code, as well as via API (Hedera is currently growing very fast, but we try to keep the documentation up-to-dated with significant milestones we go along). Below we provide a brief guidelines to work with Hedera in Java, Pig and Python, the three programming languages currently supported in Hedera.</p>
 
-
+<br>
+<br>
 <h4>Java:</h4>
 <p>
 In Java: If you work in Java, using or writing an information extraction program is fairly easy. Depending on your need, you can choose the appropriate Input format mentioned above, and define the mapper and reducer functions according to the (key,value) pairs output by the input format. For example, if you want to work with differences between two consecutive revisions of the same Wikipedia page, then your Mapper will look like:
@@ -230,9 +231,12 @@ class MyMapper extends Mapper&#60;LongWritable, RevisionDiff, &#60;YOUR KEY TYPE
 
 <pre>
 <code>
-sh etc/run-jars.sh /path/to/hedera-XXX.jar 
+sh etc/run-jars.sh /path/to/hedera-XXX.jar org.hedera.mapreduce.ExtractTemporalAnchorText /path/to/your-revision-xml-dumps /path/to/output/results [NUMBER OF REDUCERS: 1,2 40, etc.]
 </code>
 </pre>
+
+<p>Simply replace the map reduce job <code>org.hedera.mapreduce.ExtractTemporalAnchorText</code> by others (built-in or defined on your own). If you do not know the parameters of the job, just leave them empty - a helper message will be printed out to guide you how to specify the inputs.</p>
+
 
 <br>
 <h4>Pig Latin:</h4>
