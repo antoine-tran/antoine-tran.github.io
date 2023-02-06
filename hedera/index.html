@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+
+    <title>Hedera: Toolkit for working with versioned document collection using Hadoop</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+    <link href="assets/css/docs.min.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Home</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="about.html">About</a></li>
+            <li class="active"><a href="wikirevision.html">Wikipedia Revision</a></li>
+            <li><a href="https://github.com/antoine-tran/Hedera">Source code</a></li>
+            <li><a href="apidocs/index.html">API</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container theme-showcase" role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Hedera</h1>
+        <p>Hedera is a framework to facilitate the rapid development of processing methods on big versioned document collections using the Hadoop framework. It provides customized InputFormat for accessing data in parallel in standard MapReduce workflows. Hedera can be used in Hadoop Streaming to enable rapid development using different languages (Java, Python, C, etc.) , and it also supports Pig with a number of User-defined functions (UDFs). At the moment, the framework has been tested in Hadoop CDH 4.x and Pig 0.11.x. It supports both Hadoop YARN and non-YARN models. Free for research and educational purpose under GNU and Common Creative License.</p>
+        <p><a href="about.html" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+      </div>
+
+      <div class="page-header">
+        <h1>Getting started</h1>
+      </div>
+      
+        <ul>
+            <li>Instructions to work with Wikipedia revision history dataset <a href="wikirevision.html">here</a></li>
+        </ul>
+
+      <div class="page-header">
+        <h1>Architecture</h1>
+      </div>
+      
+      <p>
+      <img src="img/hedera-arch-v0.0.1.png" class="img-rounded"/>
+      </p>  
+
+        <p>
+           (documentation is being progressively updated <a href="architecture.html">here</a>.)
+        </p>
+
+
+      <div class="page-header">
+        <h1>License</h1>
+      </div>
+      
+        <p>Hedera is available under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a> and  <a href="http://creativecommons.org/">Creative Commons Contribution v3.0</a> license.</p>
+      
+
+
+
+      <div class="page-header">
+        <h1>References</h1>
+      </div>
+      
+      <p>Hedera uses the following library for working with Wikipedia:</p>
+
+      <ul>
+<li><a href="https://github.com/antoine-tran/Cloud9">Cloud9</a> : Hedera uses the WikipediaPage input formats and Writable implementations from Cloud9 tools </li>
+<li><a href="https://github.com/antoine-tran/maven-repo">Tuan4j</a>: Tuan4j-distributed is a set of utilities for handling customized Java objects and setting up jobs in Hadoop environment. It also supports bz2 compression-decompression in reading mapper inputs streams.</li>
+<li><a href="https://github.com/ogrisel/pignlproc">PigNLPRoc</a>: PigNLPRoc is an execellent tool for working with Wikipedia article dumps in Pig. Hedera inherits the parsing code from PigNLPRoc and provides the same functionalities in Wikipedia revision dumps.</li>
+<li><a href="https://github.com/whym/wikihadoop">WikiHadoop</a>: WikiHadoop provides a fast and simple way to split XML files in Wikipedia revision history using SAX-like parsing manner. Unfortunately, it is poorly-documented, does not scale well with big compressed files, and does not provide fast and approximated reading. Hedera inherits the parssing idea of Wikihadoop in transformation phase (see <a href="architecture.html">architecture</a> and <a href="apidocs/index.html">API</a> for more details) in a fully map reduce fashion, thus guarantees the scalability of handling compressed big files.</li>
+       </ul>
+
+      <div class="page-header">
+        <h1>Copyright and Disclaimer</h1>
+      </div>
+
+      <p>
+The tool is currently pretty much in active development phase, meaning that it can
+go through several updates per day, with new functionalities added or modified / improved.
+I am trying to make it stable every day, but if you find any issues regarding installation,
+running code, please drop me a message to: ttran (at) L3S (dot) de.
+      </p>
+
+    </div> <!-- /container -->
+
+ <!-- Footer
+    ================================================== -->
+    <div class="container">
+    <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Designed using <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>.</p>
+        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    </footer>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

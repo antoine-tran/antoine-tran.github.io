@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">    
+
+    <title>Hedera: Wikipedia Revision</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <link href="assets/css/docs.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Home</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="about.html">About</a></li>
+            <li class="active"><a href="wikirevision.html">Wikipedia Revision</a></li>
+            <li><a href="https://github.com/antoine-tran/Hedera">Source code</a></li>
+            <li><a href="apidocs/index.html">API</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container theme-showcase" role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <header class="jumbotron subhead">
+        <div class="container">
+          <h1>Hedera</h1>
+          <p>A Hadoop toolkit for processing large versioned document collections</p>
+        </div>
+      </header>
+
+      <div class="page-header">
+        <h1>Hedera and Wikipedia Revision</h1>
+      </div>
+      
+<p>
+Wikipedia is perhaps one of the most popular datasets among the research community of text mining. Wikipedia has several unique features distinguishing it from other dataset: It contains rich information compiled by human, it covers a wide range of topics, from scientific knowledge to celebrity's bibliography and so on, and it is free. Compared to Wikiepdia text, Wikipedia revision history includes a much broader spectrum of data: Articles, talks, discussions, etc. It also contains a complete set of snapshots for each Wikipedia pages, making it aa gold mine for many studies that are concerned with the dynamics of Wikipedia contents over time.
+</p>
+<p>Unfortunately, while there are several tools supporting processing Wikipedia text dumps in centralized and distributed settings (for example, <a href="http://lintool.github.io/Cloud9/docs/content/wikipedia.html">Cloud<sup>9</sup></a> is an excellent tool that is based on Hadoop framework), the access to the Wikipedia revision history is still prohibited because of their enormous volumes (tens of Terabytes of text). Wikipedia revision history datasets are formatted in a different way from Wikipedia text, and it contains several compressed files, which makes tools such as Cloud<sup>9</sup> difficult to re-use.
+</p>
+<p>
+Some other software tools such as <a href="https://code.google.com/p/jwpl">JWPL Revision machine</a> makes a considerable effort to repack the Wikipedia revision history dataset by storing only differences between consecutive revisions, which saves a lot of hard disk capacity (for instance, the dump versioned on 2014 May 02 amounts only 380 GBytes of hard disk). While in many cases this is sufficient to get basic structures from the dataset, such as linking network, it is unable to make text-intensive queries (for instance, full-text over a sequence of revisions of different articles) without re-constructing the text from the beginning revisions and thus result in a huge bottleneck, if not killing the database server. What is more, JWPL lacks the flexibility support to extend its functionalities, even though the authors make quite an effort to provide as rich family of APIs as possible. It is thus impossible to extract ad-hoc information from Wikipedia revision (for example, extracting all anchor texts of all revisions belonging to a certain categories). Finally, JWPL is a centralized setting, it takes very long time to preprocess (one month to index the dataset) before the first experiment / testing code can be called. In several research scenarios, this is unacceptable.
+</p>
+
+<p>
+And that is where Hedera comes in.
+</p>
+
+<p>
+With Hedera, we try to make Wikipedia revision history dataset accessible to users of different domains and demands. Instead of providing a full-fledged (and thus cumbersome, difficult to extend) indexing and storing architecture, we built Hedera as an incremental processing tool for Wikipedia revisions. Users can quickly process on subset of Wikipedia revisions (for example, a few dump files instead of all, or just work with articles), and get the first results before waiting too long. They can also extend the system using their programming languages of choice (at the moment, Hedera supports Java, Pig Latin and Python) to extract custom data without too much effort. This pages provide a brief guidance to use Hedera for handling Wikipedia revision history dataset, from the raw files.
+</p>
+
+<div class="page-header">
+  <h1>Getting started</h1>
+</div>
+
+<h3>1. Download Dataset</h3>
+<p>
+To get started, download the XML dumps from Wikipedia <a href="http://dumps.wikimedia.org/enwiki">here</a>. The matching files of revision history are named <code>enwiki-[DATE]-pages-meta-history[NO].xml-pXXXXX.*</code>, where DATE and NO is the version of the dumps as delivered at different time, and No is the index of the files. You can work with one or several, or all the files, even from different dates (if that makes sense to you). Put them in the same HDFS directory.
+</p>
+
+
+<h3>2. Build the Project</h3>
+<p>
+Next, obtain the source code from the <a href="https://github.com/antoine-tran/Hedera">Github</a> and compile it (The below code assumes you are familiar with <a href="http://maven.apache.org/">Maven build tool</a>):
+</p>
+<pre>
+<code>
+git clone https://github.com/antoine-tran/Hedera
+cd Hedera
+mvn install -DskipTests
+</code>
+</pre>
+
+<p>this will create a Jar file <code>hedera-XXX.jar</code>, and copy all of its third parties to the directory named "libhedera" in the root directory of the project. If your cluster works on a different version of Hadoop or Pig, replace those in this directory (or change the version accordingly in the POM file). Alternatively, you can also package all libraries and the compiled code into one big jar with <code>shade:shade</code> plugin (<a href="http://maven.apache.org/plugins/maven-shade-plugin/">details here</a>).
+</p>
+
+
+<h3>3. Input Format</h3>
+<p>Before moving the next steps, you should get yourself familiar with Hedera <i>InputFormat</i>. If you do not work much with Hadoop input format, you can read <a href="https://developer.yahoo.com/hadoop/tutorial/module5.html">here</a> for more conceptual explanations. Hedera currently supports the following Input Format:</p>
+
+<div class="row">
+ <!-- <div class="col-md-6"> -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Input format</th>
+          <th>Interface (key,value)</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>WikiRevisionTextInputFormat</code></td>
+          <td>(LongWritable, Text)</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content as value</td>
+        </tr>
+        <tr>
+          <td><code>WikiRevisionPageInputFormat</code></td>
+          <td>(LongWritable, Revision)</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and textual content in Java object <code>Revision</code> as value (see Javadoc API)</td>
+        </tr>
+        <tr>
+          <td><code>WikiRevisionPairInputFormat</code></td>
+          <td>(LongWritable, Text)</td>
+          <td>Transform each two consecutive revisions of a Wikipedia page into a pair with page Id as key, and textual content of the revisions as value (see <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/input/WikiRevisionPairInputFormat.RevisionReader.html">API</a> for the XML format) </td>
+        </tr>
+        <tr>
+          <td><code>WikiRevisionDiffnputFormat</code></td>
+          <td>(LongWritable, RevisionDiff)</td>
+          <td>Transform each two consecutive revisions of a Wikipedia page into a pair with page Id as key, and the differences between the textual contents of the revisions as value. The differences are computed by <a href="http://en.wikipedia.org/wiki/Diff">Myer's algorithm</a>, the results are output as Java <code>RevisionDiff</code> object (see Javadoc API)</td>
+        </tr>
+        <tr>
+          <td><code>RevisionLinkInputFormat</code></td>
+          <td>(LongWritable, LinkProfile)</td>
+          <td>Transform each revision of a Wikipedia page into a pair with revision Id as key, and the list of outgoing links to other Wikipedia pages as appeared in the revision text as value. The results are output as Java <code>LinkProfile</code> object (see Javadoc API)</td>
+        </tr>
+      </tbody>
+    </table>
+  <!-- </div> -->
+</div>
+
+<h3>Extension</h3>
+<p>
+(<i>Note: Documentation in progress</i>)
+It is possible to define your own custom input formats. All above input formats follow the similar data structures and work flow, implemented in <code>WikiRevisionInputFormat</code>. The core building block of this abstract input format is <code>WikiRevisionReader</code>, which defines two functions: <code>doWhenMatch()</code> and <code>readUntilMatch()</code>. These functions handle the logic when the parser reaches the content in between the revisions or pages. More details come soon..
+</p>
+
+<br>
+<h3>Filtering</h3>
+<p>In many cases, you do not want to process every Wikipedia pages, and prefer a quick filtering on the raw files before sending the data into map reduce. Hedera supports a number of filtering options to do so: </p>
+
+<h4>Filtering non-article pages</h4>
+
+<p>To filter the non-article pages from raw XML files, just set the configuration variable <code>org.hedera.input.onlyarticle</code> to <i>true</i>:</p>
+
+<p>In Java:</p>
+<code>
+yourJobConf.setBoolean(WikiRevisionInputFormat.SKIP_NON_ARTICLES, true);
+</code>
+
+<p>In Pig:</p>
+<code>
+SET 'org.hedera.input.onlyarticle' true
+</code>
+
+
+<h4>Sampling to time intervals</h4>
+<p>
+The revision history dump contains all text in Wikimedia projects from the beginning (2001) till the date of the dumps. You can specify one particular date of your choice with the following code snippets:
+</p>
+
+<p>In Java:</p>
+<pre>
+<code>
+hadoop jar hedera-XXX.jar [CLASS_NAME] -begin [TIME1] -end [TIME2]
+</code>
+</pre>
+
+<p>In Pig</p>
+<pre>
+<code>
+SET 'org.hedera.input.begintime' TIME1
+SET 'org.hedera.input.endtime' TIME2
+</code>
+</pre>
+
+where TIME1 and TIME2's are strings in ISOTime format.
+
+<br>
+<br>
+<h3>4. Information Extraction</h3>
+<p>(<i>Documentation in progress</i>)</p>
+
+<p>To take full advantages of Hedera's functionalities, the best way is to look at example testing codes provided in the project's source code, as well as via API (Hedera is currently growing very fast, but we try to keep the documentation up-to-dated with significant milestones we go along). Below we provide a brief guidelines to work with Hedera in Java, Pig and Python, the three programming languages currently supported in Hedera.</p>
+
+<br>
+<h4>Java:</h4>
+<p>
+In Java: If you work in Java, using or writing an information extraction program is fairly easy. Depending on your need, you can choose the appropriate Input format mentioned above, and define the mapper and reducer functions according to the (key,value) pairs output by the input format. For example, if you want to work with differences between two consecutive revisions of the same Wikipedia page, then your Mapper will look like:
+</p>
+
+<pre>
+<code>
+class MyMapper extends Mapper&#60;LongWritable, RevisionDiff, &#60;YOUR KEY TYPE&#62;, &#60;YOUR VALUE TYPE&#62;&#62; {
+
+...
+
+}
+</code>
+</pre>
+
+<p>We have provided a few example extraction program as map reduce job in the package <code>org.hedera.mapreduce</code> (see API)). For your first appetite, this is a quick example to illustrate how you can make use of Hedera extraction features. The following command extracts directly from raw XML revision dumps the graph of inter-linkings between Wikipedia articles, labeled each edges by the anchor text and the timestamp of the revisions. The graph is output in edge list format:</p>
+
+<pre>
+<code>
+sh etc/run-jars.sh /path/to/hedera-XXX.jar org.hedera.mapreduce.ExtractTemporalAnchorText /path/to/your-revision-xml-dumps /path/to/output/results [NUMBER OF REDUCERS: 1,2 40, etc.]
+</code>
+</pre>
+
+<p>Simply replace the map reduce job <code>org.hedera.mapreduce.ExtractTemporalAnchorText</code> by others (built-in or defined on your own). If you do not know the parameters of the job, just leave them empty - a helper message will be printed out to guide you how to specify the inputs.</p>
+
+
+<br>
+<h4>Pig Latin:</h4>
+<p>To extract information from XML dumps via Pig Latin, you need to register Hedera in your Pig script:</p>
+<pre>
+<code>
+REGISTER '$YOUR_LIBDIR/hedera-XXX.jar';
+</code>
+</pre>
+
+<p>In order to work with different input formats, you need to use the corresponding UDF Pig Loader (Read <a href="http://wiki.apache.org/pig/UDFManual">here</a> if you have not worked with loaders before). The loaders can be found in the package <code>org.hedera.pig.load</code>. Each loader relies on one type of input format, and it performs the transformation of data structure from java into a tuple of <code>org.apache.pig.data.Tuple</code> type. You can find more examples on how to use Pig scripts to extract various information in the directory "pig" under the root directory. For your first appetite in playing with Hedera and Pig, please check the example "<a href="flatten">Flattening dumps</a>" below to have an idea how Hedera can be used in Pig Latin.</p>
+
+<br>
+<h4>Python:</h4>
+<p>If you want to write your map-reduce job in Python, for example via Hadoop streaming, you need to transform the data into string-like format, for example, in JSON. The following code assumes that you have transform each revision in into a JSON object using our built-in flatten script (see <a href="#flatten">Data flattening</a> section below), and serialize it as one line in a text file. Then you can write your mapper as follows:
+</p>
+<pre>
+<code>
+#!/usr/bin/env python
+
+from mrjob.job import MRJob
+import json
+
+class YourMRJob(MRJob):
+    
+    def mapper(self,key,line):
+        obj = json.loads(line)
+        title = obj['page_title']
+        # extract other information
+        yield __your_key__, __your_output_value__
+
+if __name__ == "__main__":
+    YourMRJob.run()
+</code>
+</pre>
+
+<p>(Just in case you might wonder, the above code snippet uses <a href="https://pythonhosted.org/mrjob/">mrjob</a> framework. This is only for illustration, you can write any Python code the way you want)</p>
+
+<p>You can find more examples on how to use Python scripts to extract various information in the directory "python" under the root directory.</p>
+
+
+<!-- <br>
+<br>
+<br>
+<div class="page-header">
+ <h1>Building Dictionary, Vectorization</h1>
+</div>
+
+<p><i>(this is still tentative. To be updated soon)</i> In Hedera, you can also build basic data structures for Information Retrieval / matrix-like computation, such as mappings of entity / revision / texts into continous ID arrays. </p> -->
+
+<br><br><br>
+<hr/>
+<h3><a name="flatten"> Flattening dumps to CSV files </a></h3>
+
+One of the favourite format for handling text in different programming languages (e.g. Python) is plain-text CSV files. In Hedera you can flatten the XML dumps into CSV files simply by calling the Pig script XML2JSON.pig in source directory <code>pig/utils</code>. The output is the set of .csv files, each containing one revision per line in JSON format with the following schema:
+
+
+<pre>
+<code>
+{
+ "page_id":NUMBER,
+ "page_title":STRING,
+ "page_namespace":NUMBER,
+ "rev_id":NUMBER,
+ "parent_id":NUMBER,
+ "timestamp":NUMBER,
+ "user":STRING,
+ "user_id":NUMBER,
+ "comment":STRING,
+ "text":STRING
+}
+</code>
+</pre>
+
+<p>You can try to see how this works by calling:</p>
+<pre>
+<code>
+pig -p BASEDIR="/directory/path/to/your/input-xml-dumps" -p OUTPUT="/path/to/output/results" XML2JSON.pig
+</code>
+</pre>
+
+<p>Now, if you continue to work with Java, Hedera can then pipeline these new formatted files via the input format <code>WikiFullRevisionJsonInputFormat</code>, which transforms each line into a pair of (<code>LongWritable</code> , <code>FullRevision</code>), with FullRevision is the extended data structure of <code>Revision</code> with additional data on user and disccussing comments on the revision (see API <a href="http://antoine-tran.github.io/hedera/apidocs/org/hedera/io/FullRevision.html">here</a>).
+</p>
+
+<p>If you continue to work with Python, read these files line by line and parse the information using a JSON parser library (see example for Python above). It is as simple as that !!</p>
+
+    </div> <!-- /container -->
+
+<!-- Footer
+    ================================================== -->
+    <div class="container">
+    <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Designed using <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>.</p>
+        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    </footer>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

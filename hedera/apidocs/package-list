@@ -1,0 +1,12 @@
+com.manning.hip.common
+com.twitter.elephantbird.util
+org.hedera.graph
+org.hedera.io
+org.hedera.io.etl
+org.hedera.io.input
+org.hedera.mapreduce
+org.hedera.pig.eval
+org.hedera.pig.eval.wikipedia
+org.hedera.pig.load
+org.hedera.util
+pignlproc.markup
