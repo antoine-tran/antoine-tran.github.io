@@ -1,0 +1,60 @@
+title: Tuan A. Tran
+locale: en_US
+url: https://antoine-tran.github.io
+
+# Format titles with titlecase?
+titlecase: true
+
+# Build settings
+theme: minimal-mistakes-jekyll
+plugins:
+  - jekyll-feed
+
+# Found in _templates/
+post_layout: post
+page_layout: page
+
+include: [".htaccess", "_pages", "files", "images"]
+exclude: [".sass-cache", "Gemfile", "Gemfile.lock"]
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+# Site Author
+author:
+  name             : "  "
+  # avatar           : "https://avatars.githubusercontent.com/u/1254753"
+  avatar           : images/tuan-avatar.png
+  bio              : "  Meta, Bosch, IBM, L3S, MPII"
+  location         : "Southern Germany"
+  twitter          : antoinetranat
+  linkedin         : antoinetrande
+  facebook         : tuanat
+  github           : antoine-tran
+  # googlescholar    : jk2BlO4AAAAJ
+
+# Site Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      # url:
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      # url:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      # url:
+    - label: "GitLab"
+      icon: "fab fa-fw fa-gitlab"
+      # url:
+    - label: "Bitbucket"
+      icon: "fab fa-fw fa-bitbucket"
+      # url:
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      # url:
