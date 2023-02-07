@@ -9,6 +9,10 @@ titlecase: true
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
+  - jekyll-sitemap
+  - jekyll-gist
+  - jemoji
+  - jekyll-include-cache
 
 remote_theme: mmistakes/minimal-mistakes@4.24.0
 
