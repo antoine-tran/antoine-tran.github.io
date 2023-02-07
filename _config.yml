@@ -6,9 +6,11 @@ url: https://antoine-tran.github.io
 titlecase: true
 
 # Build settings
-theme: minimal-mistakes-jekyll
 plugins:
   - jekyll-feed
+  - jekyll-remote-theme
+
+remote_theme: mmistakes/minimal-mistakes
 
 # Found in _templates/
 post_layout: post
