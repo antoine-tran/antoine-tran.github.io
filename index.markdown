@@ -20,5 +20,5 @@ I hold a Master degree in Computer Science from [Max-Planck Institute for Inform
 
 ### Private
 
-I was born in Hanoi, Vietnam; and now I live in a small town in the southern of Germany with my wife and two litte girls (Vy and Lea). Before the parenthood, I loved travelling and jogging, and country music. Now I love what my kids love.
+I was born in Hanoi, Vietnam; and now I live in a small town in the southern of Germany with my wife and two litte girls (Vy and Lea). Before the parenthood, I loved travelling and jogging, and country music.
 
